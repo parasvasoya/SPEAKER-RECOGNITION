@@ -11,11 +11,10 @@ import librosa
 import sys
 warnings.filterwarnings(action="ignore",category=DeprecationWarning)
 DATASET_PATH = "DATASET"
-
-fhand=open("user_name.txt",mode='r+')
+#fhand=open("user_name.txt",mode='r+')
 features = np.asarray(())
 dest="user_models/"
-a="Megan"
+a="Mikemol"
 for dirpath,dirnames,filenames in os.walk(dest):
     print(filenames)
     temp_name=a+".gmm"
@@ -56,4 +55,4 @@ for dirpath,dirnames,filenames in os.walk(DATASET_PATH):
 
         count = count + 1
 
-fhand.close()
+#fhand.close()
