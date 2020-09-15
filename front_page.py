@@ -172,14 +172,14 @@ def main_page():
         test_frame.destroy()
     except:
         pass
-    main_frame = Frame(root, background="gray")
+    main_frame = Frame(root, background="brown")
 
-    Button(main_frame, text="Ragister", font="Arial 17", width=13, command=ragister_page).grid(row=0, column=0, padx=10,
+    Button(main_frame, text="Register yourself", font="Arial 17", width=13, command=ragister_page).grid(row=0, column=0, padx=10,
                                                                                                pady=200)
 
     Button(main_frame, text="Test", font="Arial 17", width=13, command=test_page).grid(row=0, column=1, padx=10)
 
-    Button(main_frame, text="quit", font="Arial 17", width=13, command=root.destroy).grid(row=0, column=2, padx=10)
+    Button(main_frame, text="Exit", font="Arial 17", width=13, command=root.destroy).grid(row=0, column=2, padx=10)
 
     main_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
 
@@ -191,7 +191,7 @@ def ragister_page():
     except:
         pass
 
-    ragister_frame = Frame(root, background="gray")
+    ragister_frame = Frame(root, background="green")
 
     user_name_label = Label(ragister_frame, text="User Name : ", font="Arial 25")
     user_name_label.grid(row=0, column=0, padx=10, pady=10)
@@ -213,7 +213,7 @@ def ragister_page():
     reset_button = Button(ragister_frame, text="reset", font="Arial 17", width=13, command=clear)
     reset_button.grid(row=6, column=1, padx=10, pady=10, sticky=W)
 
-    quit_button = Button(ragister_frame, text="quit", font="Arial 17", width=13, command=main_page)
+    quit_button = Button(ragister_frame, text="go to home", font="Arial 17", width=13, command=main_page)
     quit_button.grid(row=6, column=1, padx=10, pady=10, sticky=E)
 
     ragister_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
@@ -241,7 +241,7 @@ def test_page():
     reset_button = Button(test_frame, text="reset", font="Arial 17", width=13, command=clear)
     reset_button.grid(row=6, column=1, padx=10, pady=10, sticky=W)
 
-    quit_button = Button(test_frame, text="quit", font="Arial 17", width=13, command=main_page)
+    quit_button = Button(test_frame, text="Go to Home", font="Arial 17", width=13, command=main_page)
     quit_button.grid(row=6, column=2, padx=10, pady=10, sticky=E)
 
     test_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
