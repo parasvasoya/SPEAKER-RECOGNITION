@@ -14,7 +14,7 @@ DATASET_PATH = "DATASET"
 #fhand=open("user_name.txt",mode='r+')
 features = np.asarray(())
 dest="user_models/"
-a="Mikemol"
+a="bharat"
 for dirpath,dirnames,filenames in os.walk(dest):
     print(filenames)
     temp_name=a+".gmm"
