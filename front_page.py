@@ -6,8 +6,8 @@ import wave
 
 PAGE_HIGHT = 500
 PAGE_WIDTH = 650
-PATH = r"C:\Users\DC\Documents\wav"
-DATA_PATH = r"new_dataset"
+PATH = r"C:\Users\DC\Documents"
+DATA_PATH = r"DATASET"
 SAMPLE_PATH = r"test_samples"
 
 
