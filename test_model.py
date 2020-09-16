@@ -36,9 +36,13 @@ if take==1:
         gmm=models[i]
         scores=np.array(gmm.score(vector))
         log_likelihood[i]=scores.sum()
-
-    winner=np.argmax(log_likelihood)
-    print("detected as -",speakers[winner])
+    max1 = max(log_likelihood)
+    if max1 < -30:
+        print("you are not ragister...")
+    # winner=np.argmax(log_likelihood)
+    else:
+        winner = np.where(log_likelihood == max1)
+        print("detected as -",speakers[winner[0][0]])
 
     time.sleep(1.0)
 
