@@ -2,13 +2,15 @@ from tkinter import *
 import os
 import pyaudio
 import wave
-
+from pydub import AudioSegment
+import math
+from model_training import train_model
 
 PAGE_HIGHT = 500
 PAGE_WIDTH = 650
 PATH = r"C:\Users\DC\Documents"
 DATA_PATH = r"DATASET"
-SAMPLE_PATH = r"test_samples"
+SAMPLE_PATH = r"SampleData"
 
 
 def record(no):
@@ -18,7 +20,7 @@ def record(no):
     sample_format = pyaudio.paInt16  # 16 bits per sample
     channels = 2
     fs = 44100  # Record at 44100 samples per second
-    seconds = 1
+    seconds = 6
 
     p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
@@ -135,6 +137,17 @@ def submit():
         wf.setframerate(audio[2])
         wf.writeframes(audio[3])
         wf.close()
+
+        # Opening file and extracting segment
+
+        song = AudioSegment.from_wav(set_path)
+        l = len(list(song))
+        # print(l)
+        extract = song[l / math.ceil(l / 1000):(l - l / math.ceil(l / 1000))]
+        # Saving
+        extract.export(set_path, format="wav")
+
+    train_model(user_entry.get())
 
     clear()
     popupmsg("your data submited... ")
