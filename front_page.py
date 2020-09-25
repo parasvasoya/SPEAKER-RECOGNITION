@@ -5,9 +5,13 @@ import wave
 from pydub import AudioSegment
 import math
 from model_training import train_model
+from test_model import test_model
+from tqdm import tqdm
+import time
 
-PAGE_HIGHT = 500
-PAGE_WIDTH = 650
+
+PAGE_HIGHT = 700
+PAGE_WIDTH = 1100
 PATH = r"C:\Users\DC\Documents"
 DATA_PATH = r"DATASET"
 SAMPLE_PATH = r"SampleData"
@@ -105,7 +109,7 @@ def popupmsg(msg):
 
 
 def clear():
-    global user_entry, file_name, name_flag, flag_list, submit_button, test_file_name, submit_test
+    global user_entry, file_name, name_flag, flag_list, submit_button, test_file_name, submit_test, result_var
     try:
         user_entry.set('')
         name_flag = 0
@@ -113,6 +117,7 @@ def clear():
             i.set("Recording")
             flag_list[file_name.index(i)] = 0
         test_file_name.set("Recording")
+        result_var.set("")
         submit_test['state'] = DISABLED
         submit_button['state'] = DISABLED
     except:
@@ -148,13 +153,17 @@ def submit():
         extract.export(set_path, format="wav")
 
     train_model(user_entry.get())
+    for i in tqdm(range(100),
+                  desc="Loading…",
+                  ascii=False, ncols=100):
+        time.sleep(0.1)
 
     clear()
     popupmsg("your data submited... ")
 
 
 def test():
-    global test_audio, I
+    global test_audio, I, result_var
     set_path = os.path.join(SAMPLE_PATH, f"test{I}.wav")
     wf = wave.open(set_path, 'wb')
     wf.setnchannels(test_audio[0])
@@ -162,7 +171,12 @@ def test():
     wf.setframerate(test_audio[2])
     wf.writeframes(test_audio[3])
     wf.close()
+
+    result = test_model(f"test{I}.wav")
+    result_var.set(result)
+
     I += 1
+
 
 
 def task():
@@ -187,12 +201,23 @@ def main_page():
         pass
     main_frame = Frame(root, background="brown")
 
-    Button(main_frame, text="Register yourself", font="Arial 17", width=13, command=ragister_page).grid(row=0, column=0, padx=10,
-                                                                                               pady=200)
+    header_frame = Frame(main_frame, background="green")
 
-    Button(main_frame, text="Test", font="Arial 17", width=13, command=test_page).grid(row=0, column=1, padx=10)
+    Label(header_frame, text="SPEAKER - RECOGNITION", background="green", font="Arial 30").pack(padx = 10, pady = 10)
+    Label(header_frame, text="CONTROL PANEL", background="green", font="Arial 30").pack(padx = 10, pady = 10)
 
-    Button(main_frame, text="Exit", font="Arial 17", width=13, command=root.destroy).grid(row=0, column=2, padx=10)
+    header_frame.pack(fill=X, expand=YES, padx=20, pady=20, anchor=N)
+
+    button_frame = Frame(main_frame, background='brown')
+    Button(button_frame, text="Register yourself", font="Arial 17", width=13, command=ragister_page).grid(row=0, column=0, padx=15, pady=20)
+
+    Button(button_frame, text="Test", font="Arial 17", width=13, command=test_page).grid(row=0, column=1, padx=15, pady=20)
+
+    Button(button_frame, text="User Data", font="Arial 17", width=13).grid(row=0, column=2, padx=15, pady=20)
+
+    Button(button_frame, text="Exit", font="Arial 17", width=13, command=root.destroy).grid(row=0, column=3, padx=15, pady=20)
+
+    button_frame.pack(padx=20, pady=200)
 
     main_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
 
@@ -233,7 +258,7 @@ def ragister_page():
 
 
 def test_page():
-    global main_frame, test_frame, submit_test, test_file_name
+    global main_frame, test_frame, submit_test, test_file_name, result_var
     try:
         main_frame.destroy()
     except:
@@ -248,7 +273,7 @@ def test_page():
     file_name_label = Label(test_frame, textvariable=test_file_name, font="Arial 12")
     file_name_label.grid(row=i, column=1, padx=10, pady=100, sticky=W)
 
-    submit_test = Button(test_frame, text="submit", font="Arial 17", width=13, state=DISABLED, command=test)
+    submit_test = Button(test_frame, text="Check", font="Arial 17", width=13, state=DISABLED, command=test)
     submit_test.grid(row=6, column=0, padx=10, pady=10)
 
     reset_button = Button(test_frame, text="reset", font="Arial 17", width=13, command=clear)
@@ -257,6 +282,9 @@ def test_page():
     quit_button = Button(test_frame, text="Go to Home", font="Arial 17", width=13, command=main_page)
     quit_button.grid(row=6, column=2, padx=10, pady=10, sticky=E)
 
+    result_label = Label(test_frame, textvariable=result_var, font="Arial 17")
+    result_label.grid(row=7, column=0, padx=10, pady=10)
+
     test_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
 
 
@@ -264,6 +292,7 @@ if __name__ == '__main__':
     root = Tk()
     root.geometry(f"{PAGE_WIDTH}x{PAGE_HIGHT}")
     root.title("Home Page")
+    # root.attributes('-fullscreen', True)
 
     I = len([name for name in os.listdir(SAMPLE_PATH) if os.path.isfile(os.path.join(SAMPLE_PATH, name))]) + 1
     user_entry = StringVar(value='')
@@ -277,6 +306,7 @@ if __name__ == '__main__':
         file_name.append(StringVar(value='Recording'))
         audio_list.append([])
     test_file_name = StringVar(value="recording")
+    result_var = StringVar(value="")
 
     main_page()
 
