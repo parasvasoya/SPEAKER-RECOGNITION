@@ -2,12 +2,9 @@ import pickle
 import numpy as np
 from scipy.io.wavfile import read
 from sklearn.mixture import gaussian_mixture
-from sklearn import mixture
 from feature_extraction import extract_features
-#from speakerfeatures import extract_features
 import warnings
 import os
-import librosa
 import sys
 
 def train_model(user_name):
