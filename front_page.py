@@ -178,7 +178,6 @@ def test():
     I += 1
 
 
-
 def task():
     global flag_list, submit_button, name_flag, user_entry, flag
     if user_entry.get() != '':
@@ -190,13 +189,17 @@ def task():
 
 
 def main_page():
-    global main_frame, ragister_frame, test_frame, root
+    global main_frame, ragister_frame, test_frame, root, data_frame
     try:
         ragister_frame.destroy()
     except:
         pass
     try:
         test_frame.destroy()
+    except:
+        pass
+    try:
+        data_frame.destroy()
     except:
         pass
     main_frame = Frame(root, background="brown")
@@ -213,7 +216,7 @@ def main_page():
 
     Button(button_frame, text="Test", font="Arial 17", width=13, command=test_page).grid(row=0, column=1, padx=15, pady=20)
 
-    Button(button_frame, text="User Data", font="Arial 17", width=13).grid(row=0, column=2, padx=15, pady=20)
+    Button(button_frame, text="User Data", font="Arial 17", width=13, command=data_set).grid(row=0, column=2, padx=15, pady=20)
 
     Button(button_frame, text="Exit", font="Arial 17", width=13, command=root.destroy).grid(row=0, column=3, padx=15, pady=20)
 
@@ -286,6 +289,31 @@ def test_page():
     result_label.grid(row=7, column=0, padx=10, pady=10)
 
     test_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
+
+
+def data_set():
+    global main_frame, data_frame
+    try:
+        main_frame.destroy()
+    except:
+        pass
+
+    data_frame = Frame(root, background="gray")
+
+    u_name = os.listdir(DATA_PATH)
+    print(u_name)
+    i = j = 0
+    for u in u_name:
+        if i > 2:
+            j += 1
+            i = 0
+        Label(data_frame, text=u, background="gray", font="Arial 17").grid(row=i, column=j, padx=10, pady=10)
+        i += 1
+
+    quit_button = Button(data_frame, text="Go to Home", font="Arial 17", width=13, command=main_page)
+    quit_button.grid(row=4, column=0, padx=10, pady=10, sticky=E)
+
+    data_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
 
 
 if __name__ == '__main__':
