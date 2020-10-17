@@ -39,7 +39,7 @@ def test_model(file_name):
         log_likelihood[i]=scores.sum()
     max1 = max(log_likelihood)
     if max1 < -30:
-        return "you are not ragister..."
+        return "You are not Register..."
     # winner=np.argmax(log_likelihood)
     else:
         winner = np.where(log_likelihood == max1)
