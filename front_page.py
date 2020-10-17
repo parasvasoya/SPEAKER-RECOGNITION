@@ -2,6 +2,7 @@ from tkinter import *
 import os
 import pyaudio
 import wave
+<<<<<<< Updated upstream
 from pydub import AudioSegment
 import math
 from model_training import train_model
@@ -21,6 +22,15 @@ BG = 'cornsilk2'
 HBG = "slate gray"
 MFBG = "salmon1"
 BBG = "azure2"
+=======
+
+
+PAGE_HIGHT = 500
+PAGE_WIDTH = 650
+PATH = r"C:\Users\DC\Documents"
+DATA_PATH = r"DATASET"
+SAMPLE_PATH = r"test_samples"
+>>>>>>> Stashed changes
 
 
 def record(no):
@@ -30,7 +40,7 @@ def record(no):
     sample_format = pyaudio.paInt16  # 16 bits per sample
     channels = 2
     fs = 44100  # Record at 44100 samples per second
-    seconds = 6
+    seconds = 1
 
     p = pyaudio.PyAudio()  # Create an interface to PortAudio
 
@@ -137,15 +147,19 @@ def popupmsg(msg):
 
 
 def clear():
-    global user_entry, file_name, name_flag, flag_list, submit_button, test_file_name, submit_test, result_var
+    global user_entry, file_name, name_flag, flag_list, submit_button, test_file_name, submit_test
     try:
         user_entry.set('')
         name_flag = 0
         for i in file_name:
             i.set("Wait For Input")
             flag_list[file_name.index(i)] = 0
+<<<<<<< Updated upstream
         test_file_name.set("Wait For Input")
         result_var.set("")
+=======
+        test_file_name.set("Recording")
+>>>>>>> Stashed changes
         submit_test['state'] = DISABLED
         submit_button['state'] = DISABLED
     except:
@@ -181,21 +195,6 @@ def submit():
         wf.writeframes(audio[3])
         wf.close()
 
-        # Opening file and extracting segment
-
-        song = AudioSegment.from_wav(set_path)
-        l = len(list(song))
-        # print(l)
-        extract = song[l / math.ceil(l / 1000):(l - l / math.ceil(l / 1000))]
-        # Saving
-        extract.export(set_path, format="wav")
-
-    train_model(user_entry.get())
-    for i in tqdm(range(100),
-                  desc="Loading…",
-                  ascii=False, ncols=100):
-        time.sleep(0.1)
-
     clear()
     popupmsg("your data submited... ")
 
@@ -225,7 +224,7 @@ def submit1():
 
 
 def test():
-    global test_audio, I, result_var
+    global test_audio, I
     set_path = os.path.join(SAMPLE_PATH, f"test{I}.wav")
     wf = wave.open(set_path, 'wb')
     wf.setnchannels(test_audio[0])
@@ -233,10 +232,6 @@ def test():
     wf.setframerate(test_audio[2])
     wf.writeframes(test_audio[3])
     wf.close()
-
-    result = test_model(f"test{I}.wav")
-    result_var.set(result)
-
     I += 1
 
 
@@ -287,6 +282,7 @@ def main_page():
 
     main_frame = Frame(root, background=BG)
 
+<<<<<<< Updated upstream
     header_frame = Frame(main_frame, background=HBG)
 
     Label(header_frame, text="SPEAKER - RECOGNITION", background=HBG, font="Arial 30").pack(padx = 10, pady = 10)
@@ -304,6 +300,14 @@ def main_page():
     Button(button_frame, text="Exit", font="Arial 17", width=13, background=BBG, command=root.destroy).grid(row=0, column=3, padx=15, pady=20)
 
     button_frame.pack(padx=20, pady=200)
+=======
+    Button(main_frame, text="Register yourself", font="Arial 17", width=13, command=ragister_page).grid(row=0, column=0, padx=10,
+                                                                                               pady=200)
+
+    Button(main_frame, text="Test", font="Arial 17", width=13, command=test_page).grid(row=0, column=1, padx=10)
+
+    Button(main_frame, text="Exit", font="Arial 17", width=13, command=root.destroy).grid(row=0, column=2, padx=10)
+>>>>>>> Stashed changes
 
     main_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
 
@@ -428,7 +432,7 @@ def ragister_page_file():
 
 
 def test_page():
-    global main_frame, test_frame, submit_test, test_file_name, result_var
+    global main_frame, test_frame, submit_test, test_file_name
     try:
         main_frame.destroy()
     except:
@@ -449,8 +453,13 @@ def test_page():
     file_name_label = Label(button_frame, textvariable=test_file_name, background=BG, font="Arial 12")
     file_name_label.grid(row=0, column=1, padx=10, pady=10, sticky=W)
 
+<<<<<<< Updated upstream
     submit_test = Button(button_frame, text="Check", font="Arial 17", width=13, background=BBG, state=DISABLED, command=test)
     submit_test.grid(row=1, column=0, padx=10, pady=10)
+=======
+    submit_test = Button(test_frame, text="submit", font="Arial 17", width=13, state=DISABLED, command=test)
+    submit_test.grid(row=6, column=0, padx=10, pady=10)
+>>>>>>> Stashed changes
 
     reset_button = Button(button_frame, text="reset", font="Arial 17", width=13, background=BBG, command=clear)
     reset_button.grid(row=1, column=1, padx=10, pady=10, sticky=W)
@@ -458,10 +467,13 @@ def test_page():
     quit_button = Button(button_frame, text="Go to Home", font="Arial 17", width=13, background=BBG, command=main_page)
     quit_button.grid(row=1, column=2, padx=10, pady=10, sticky=E)
 
+<<<<<<< Updated upstream
     result_label = Label(button_frame, textvariable=result_var, background=BG, font="Arial 17")
     result_label.grid(row=2, column=1, padx=10, pady=10)
 
     button_frame.pack(padx=20, pady=150)
+=======
+>>>>>>> Stashed changes
     test_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
 
 
@@ -504,7 +516,6 @@ if __name__ == '__main__':
     root = Tk()
     root.geometry(f"{PAGE_WIDTH}x{PAGE_HIGHT}")
     root.title("Home Page")
-    # root.attributes('-fullscreen', True)
 
     I = len([name for name in os.listdir(SAMPLE_PATH) if os.path.isfile(os.path.join(SAMPLE_PATH, name))]) + 1
     user_entry = StringVar(value='')
@@ -517,8 +528,12 @@ if __name__ == '__main__':
         flag_list.append(0)
         file_name.append(StringVar(value='Wait For Input'))
         audio_list.append([])
+<<<<<<< Updated upstream
     test_file_name = StringVar(value="Wait For Input")
     result_var = StringVar(value="")
+=======
+    test_file_name = StringVar(value="recording")
+>>>>>>> Stashed changes
 
     main_page()
 
