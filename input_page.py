@@ -10,7 +10,7 @@ PATH = r"C:\Users\DC\Documents\wav"
 DATA_PATH = r"DATASET"
 
 
-def open_file(event):
+def open_file1(event):
     global file_name, flag_list
     file1 = filedialog.askopenfilename(initialdir=PATH, title="Select file", filetypes=(("wav files", "*.wav"),))
     if file1 == '':
@@ -42,17 +42,17 @@ def popupmsg(msg):
     popup.mainloop()
 
 
-def clear():
-    global user_entry, file_name, name_flag, flag_list, submit_button
+def clear1():
+    global user_entry, file_name, name_flag, flag_list, submit1_button
     user_entry.set('')
     name_flag = 0
     for i in file_name:
         i.set(f"select file {file_name.index(i)+1}")
         flag_list[file_name.index(i)] = 0
-    submit_button['state'] = DISABLED
+    submit1_button['state'] = DISABLED
 
 
-def submit():
+def submit1():
     global user_entry, file_name, root
 
     set_data_path = os.path.join(DATA_PATH, user_entry.get())
@@ -66,18 +66,18 @@ def submit():
         set_path = os.path.join(set_data_path, f"{user_entry.get()}{i}")
         shutil.copyfile(name.get(), set_path)
 
-    clear()
-    popupmsg("your data submited... ")
+    clear1()
+    popupmsg("your data submit1ed... ")
 
 
-def task():
-    global flag_list, submit_button, name_flag, user_entry
+def task1():
+    global flag_list, submit1_button, name_flag, user_entry
     if user_entry.get() != '':
         name_flag = 1
-    if name_flag == 1 and len(set(flag_list)) == 1 and flag_list[0] == 1 and submit_button["state"] == DISABLED:
-        submit_button["state"] = NORMAL
+    if name_flag == 1 and len(set(flag_list)) == 1 and flag_list[0] == 1 and submit1_button["state"] == DISABLED:
+        submit1_button["state"] = NORMAL
 
-    root.after(2000, task)  # reschedule event in 2 seconds
+    root.after(2000, task1)  # reschedule event in 2 seconds
 
 
 if __name__ == '__main__':
@@ -103,15 +103,15 @@ if __name__ == '__main__':
     for i in range(1, 6):
         open_file_button = Button(main_frame, text=f"Choose file{i}", font="Arial 17", width=13)
         open_file_button.grid(row=i, column=0, padx=10, pady=10)
-        open_file_button.bind("<Button-1>", open_file)
+        open_file_button.bind("<Button-1>", open_file1)
 
         file_name_label = Label(main_frame, textvariable=file_name[i-1], font="Arial 12")
         file_name_label.grid(row=i, column=1, padx=10, pady=10, sticky=W)
 
-    submit_button = Button(main_frame, text="submit", font="Arial 17", width=13, state=DISABLED, command=submit)
-    submit_button.grid(row=6, column=0, padx=10, pady=10)
+    submit1_button = Button(main_frame, text="submit1", font="Arial 17", width=13, state=DISABLED, command=submit1)
+    submit1_button.grid(row=6, column=0, padx=10, pady=10)
 
-    reset_button = Button(main_frame, text="reset", font="Arial 17", width=13, command=clear)
+    reset_button = Button(main_frame, text="reset", font="Arial 17", width=13, command=clear1)
     reset_button.grid(row=6, column=1, padx=10, pady=10, sticky=W)
 
     quit_button = Button(main_frame, text="quit", font="Arial 17", width=13, command=root.destroy)
@@ -119,6 +119,6 @@ if __name__ == '__main__':
 
     main_frame.pack(fill=BOTH, expand=YES, padx=20, pady=20)
 
-    root.after(2000, task)
+    root.after(2000, task1)
 
     root.mainloop()
